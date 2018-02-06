@@ -1,0 +1,22 @@
+.gamePage {
+    display: flex;
+    /* background-color: #f70; */
+    width: 600px;
+    height: 600px;
+    align-items: center;
+    justify-content: space-around;
+}
+
+
+/* 
+.gameBlock {
+    background-color: #f00;
+    height: 70%;
+    width: 300px;
+}
+
+.gameScore {
+    background-color: #000;
+    height: 70%;
+    width: 100px;
+} */
