@@ -1,4 +1,5 @@
 .gamePage {
+    margin: 0 auto;
     display: flex;
     /* background-color: #f70; */
     width: 600px;

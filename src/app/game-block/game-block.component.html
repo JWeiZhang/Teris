@@ -1,6 +1,6 @@
 <div class="gameBlock">
-  <div class="row f1" *ngFor="let item of data; let y = index;">
-    <div class="block f1" *ngFor="let subItem of item; let x = index" [ngStyle]="{'background-color': getSquareColor(subItem)}">
+  <div class="row f1" *ngFor="let item of data; let y = index;" [ngStyle]="{'display': (y < 2 ? 'none': '')}">
+    <div class="block f1" *ngFor="let subItem of item; let x = index" [ngStyle]="{'background-color': getSquareColor(subItem), 'display': (y < 2 ? 'none': '')}">
     </div>
   </div>
 </div>

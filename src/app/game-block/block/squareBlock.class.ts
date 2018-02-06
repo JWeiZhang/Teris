@@ -7,10 +7,6 @@ export class SquareBlock extends Block implements IBlock {
     public colorIdx = 1;
     public rootPoint = new Point(4, 0);
 
-    create() {
-        return this.getRotateBody(this.rotateIdx);
-    }
-
     getRotateBody(idx: number) {
         let result: Point[];
         switch (idx) {

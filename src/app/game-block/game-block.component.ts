@@ -40,11 +40,14 @@ export class GameBlockComponent implements OnInit {
 
   ngOnInit() {
     setInterval(() => {
-      if (this.canDrop()) {
+      const dropResult = this.canDrop();
+      if (dropResult === 1) {
         this.drop();
-      } else {
+      } else if (dropResult === 0) {
         this.stop();
         this.createNewObject();
+      } else {
+        console.log('Over');
       }
     }, 300);
   }
@@ -80,11 +83,14 @@ export class GameBlockComponent implements OnInit {
     for (let y = 0; y < 22; y++) {
       for (let x = 0; x < 10; x++) {
         if (this.data[y][x] < 0 && (y + 1 > 21 || (this.data[y + 1][x] > 0))) {
-          return false;
+          if (y === 2) {
+            return 2;
+          }
+          return 0;
         }
       }
     }
-    return true;
+    return 1;
   }
 
   drop() {
@@ -101,7 +107,7 @@ export class GameBlockComponent implements OnInit {
 
   createNewObject() {
 
-    this.type = Math.floor(Math.random() * 7);
+    this.type = 0;//Math.floor(Math.random() * 7);
     let newSquare: Point[];
     switch (this.type) {
       case 0:
@@ -266,6 +272,7 @@ export class GameBlockComponent implements OnInit {
   setBlock(newPosition: Point[]) {
     // console.log(newPosition);
     newPosition.forEach((item, idx) => {
+      console.log(item.y, item.x);
       this.data[item.y][item.x] = this.nowBlock.colorIdx * -1;
     });
   }
@@ -287,6 +294,10 @@ export class GameBlockComponent implements OnInit {
       this.drop();
     }
     this.stop();
+  }
+
+  isOver() {
+
   }
 }
 
