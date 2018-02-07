@@ -3,4 +3,7 @@
     <div class="block f1" *ngFor="let subItem of item; let x = index" [ngStyle]="{'background-color': getSquareColor(subItem), 'display': (y < 2 ? 'none': '')}">
     </div>
   </div>
+  <div class="gameOver" [ngStyle]="{'display': isOver ? '' :'none'}">
+    GAMEOVER!
+  </div>
 </div>

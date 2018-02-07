@@ -19,17 +19,15 @@ export class GameBlockComponent implements OnInit {
   public type: number;
   public squareStyle: number;
   public nowBlock: any;
+  public isOver: Boolean = false;
 
   public style2: number[][][] = [[[0, 0], [1, 0], [2, 0], [3, 0]], [[0, 0], [0, 1], [0, 2], [0, 3]]];
   constructor(
     private renderer: Renderer
   ) {
-    // this.data.push([0, 0, 0, 0, -1, -1, 0, 0, 0, 0]);
-    // this.data.push([0, 0, 0, 0, -1, -1, 0, 0, 0, 0]);
     for (let y = 0; y < 22; y++) {
       const temp = [];
       for (let x = 0; x < 10; x++) {
-        // temp.push(Math.random() > 0.5 ? 1 : 0);
         temp.push(0);
       }
       this.data.push(temp);
@@ -46,8 +44,9 @@ export class GameBlockComponent implements OnInit {
       } else if (dropResult === 0) {
         this.stop();
         this.createNewObject();
-      } else {
-        console.log('Over');
+        // } else {
+        //   this.stop();
+        //   this.isOver = true;
       }
     }, 300);
   }
@@ -57,15 +56,17 @@ export class GameBlockComponent implements OnInit {
   }
 
   stop() {
-    for (let y = 0; y < 22; y++) {
+    for (let y = 21; y >= 0; y--) {
       for (let x = 0; x < 10; x++) {
         if (this.data[y][x] < 0) {
           this.data[y][x] *= -1;
         }
       }
-
-      let canClear = true;
+    }
+    let isClear = false;
+    for (let y = 21; y >= 0; y--) {
       // 判斷是否可以消除列(整列不為0)
+      let canClear = true;
       for (let x = 0; x < 10; x++) {
         if (this.data[y][x] === 0) {
           canClear = false;
@@ -75,6 +76,28 @@ export class GameBlockComponent implements OnInit {
 
       if (canClear) {
         this.clearSquare(y);
+        isClear = true;
+      }
+    }
+
+    if (isClear) {
+      console.log('isClear');
+      // 將全部方塊改為可降落模式 *-1
+      for (let y = 21; y >= 0; y--) {
+        for (let x = 0; x < 10; x++) {
+          this.data[y][x] *= -1;
+        }
+      }
+      // 可以下降時持續下降
+      while (1) {
+        const dropResult = this.canDrop();
+        console.log(dropResult);
+        if (dropResult === 1) {
+          this.drop();
+        } else if (dropResult === 0) {
+
+        }
+        break;
       }
     }
   }
@@ -83,7 +106,7 @@ export class GameBlockComponent implements OnInit {
     for (let y = 0; y < 22; y++) {
       for (let x = 0; x < 10; x++) {
         if (this.data[y][x] < 0 && (y + 1 > 21 || (this.data[y + 1][x] > 0))) {
-          if (y === 2) {
+          if (y < 2) {
             return 2;
           }
           return 0;
@@ -107,7 +130,7 @@ export class GameBlockComponent implements OnInit {
 
   createNewObject() {
 
-    this.type = 0;//Math.floor(Math.random() * 7);
+    this.type = 0; // Math.floor(Math.random() * 7);
     let newSquare: Point[];
     switch (this.type) {
       case 0:
@@ -257,7 +280,6 @@ export class GameBlockComponent implements OnInit {
   canRotate(changeRange: Point[], rootPoint: Point) {
 
     for (let i = 0; i < changeRange.length; i++) {
-      // console.log(changeRange[i][0], squareX);
 
       if (changeRange[i].x + rootPoint.x < 0 || changeRange[i].x + rootPoint.x > 9) {
         return false;
@@ -270,34 +292,17 @@ export class GameBlockComponent implements OnInit {
   }
 
   setBlock(newPosition: Point[]) {
-    // console.log(newPosition);
     newPosition.forEach((item, idx) => {
-      console.log(item.y, item.x);
       this.data[item.y][item.x] = this.nowBlock.colorIdx * -1;
     });
   }
 
   clearSquare(rowNum) {
-
+    console.log('clear');
     // 先消除列
     for (let x = 0; x < 10; x++) {
       this.data[rowNum][x] = 0;
     }
-    // 將全部方塊改為可降落模式 *-1
-    for (let y = 0; y < rowNum; y++) {
-      for (let x = 0; x < 10; x++) {
-        this.data[y][x] *= -1;
-      }
-    }
-    // 可以下降時持續下降
-    while (this.canDrop()) {
-      this.drop();
-    }
-    this.stop();
-  }
-
-  isOver() {
-
   }
 }
 

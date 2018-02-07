@@ -1,4 +1,5 @@
 .gameBlock {
+    position: relative;
     height: 500px;
     width: 250px;
     background-color: #fff;
@@ -24,4 +25,16 @@
 
 .fill {
     background-color: #f00;
+}
+
+.gameOver {
+    background-color: #fff;
+    opacity: 0.7;
+    position: absolute;
+    top: 40%;
+    height: 10%;
+    width: 100%;
+    z-index: 1;
+    text-align: center;
+    font-size: 1.5em;
 }
