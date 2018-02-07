@@ -44,9 +44,9 @@ export class GameBlockComponent implements OnInit {
       } else if (dropResult === 0) {
         this.stop();
         this.createNewObject();
-        // } else {
-        //   this.stop();
-        //   this.isOver = true;
+      } else {
+        this.stop();
+        this.isOver = true;
       }
     }, 300);
   }
@@ -90,14 +90,12 @@ export class GameBlockComponent implements OnInit {
       }
       // 可以下降時持續下降
       while (1) {
-        const dropResult = this.canDrop();
-        console.log(dropResult);
+        let dropResult = this.canDrop();
         if (dropResult === 1) {
           this.drop();
         } else if (dropResult === 0) {
-
+          break;
         }
-        break;
       }
     }
   }
@@ -106,7 +104,7 @@ export class GameBlockComponent implements OnInit {
     for (let y = 0; y < 22; y++) {
       for (let x = 0; x < 10; x++) {
         if (this.data[y][x] < 0 && (y + 1 > 21 || (this.data[y + 1][x] > 0))) {
-          if (y < 2) {
+          if (y < 3) {
             return 2;
           }
           return 0;
@@ -130,7 +128,7 @@ export class GameBlockComponent implements OnInit {
 
   createNewObject() {
 
-    this.type = 0; // Math.floor(Math.random() * 7);
+    this.type = Math.floor(Math.random() * 7);
     let newSquare: Point[];
     switch (this.type) {
       case 0:
@@ -204,7 +202,7 @@ export class GameBlockComponent implements OnInit {
     if (e.keyCode === 39 && this.canMove('right')) {
       this.moveSquare('right');
     }
-    if (e.keyCode === 40 && this.canDrop()) {
+    if (e.keyCode === 40 && this.canDrop() === 1) {
       this.drop();
     }
     if (e.keyCode === 38) {
